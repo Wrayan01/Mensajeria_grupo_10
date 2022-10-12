@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+from xml.etree.ElementTree import tostring
 from flask import Flask, jsonify, render_template, url_for, request, redirect, flash, session
 import controlador
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -48,7 +49,6 @@ def validar_email():
         flash('Usuario no Existe en la base de datos')
     else:
         flash('No se pudo realizar la consulta')
-
     return redirect(url_for('recuperar'))
 
 
@@ -87,9 +87,13 @@ def activar_cuenta():
     username = datos['username']
     codver = datos['codverificacion']
     resultado = controlador.activar_usuario(username, codver)
-    if resultado:
+    if resultado == 'SI':
+        print ("El resultado es")
+        print (resultado)
         flash('Cuenta Activada Satisfactoriamente')
     else:
+        print ("El resultado es")
+        print (resultado)
         flash('Error en Activacion')
 
     return redirect(url_for('verificar'))
